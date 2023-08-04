@@ -8,7 +8,7 @@ from utils import resize_and_save_image
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('email', 'username', 'first_name', 'last_name', 'password', 'is_active', 'is_staff')
+        fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
 
 
@@ -66,3 +66,8 @@ class ProfilePictureSerializer(serializers.ModelSerializer):
             raise ValidationError("Image could not be updated.")
 
         return super().update(instance, validated_data)
+
+    def validate_image(self, value):
+        if not value.name.endswith(('.jpg', '.jpeg', '.png')):
+            raise ValidationError("Image extension is not valid. It should be jpg, jpeg or png.")
+        return value
