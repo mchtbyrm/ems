@@ -35,18 +35,6 @@ class ProfilePictureSerializer(serializers.ModelSerializer):
         model = ProfilePicture
         fields = '__all__'
 
-    def create(self, validated_data):
-        try:
-            image = validated_data.pop('image')
-            image = resize_and_save_image(image, image.name, thumbnail=True)
-
-            validated_data['image'] = image
-        except Exception as e:
-            print(e)
-            pass
-
-        return super().create(validated_data)
-
     def update(self, instance, validated_data):
         try:
             print(validated_data)

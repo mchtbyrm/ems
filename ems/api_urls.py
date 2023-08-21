@@ -4,9 +4,9 @@ from rest_framework_extensions.routers import ExtendedDefaultRouter
 from account.views import CustomUserViewSet, ProfileViewSet, ProfilePictureViewSet, CreateUserView
 
 router = DefaultRouter(trailing_slash=False)
-router.register(r'users', CustomUserViewSet)
-router.register(r'profiles', ProfileViewSet)
-router.register(r'profile-pictures', ProfilePictureViewSet)
+router.register(r'users', CustomUserViewSet, basename='user')
+router.register(r'profiles', ProfileViewSet, basename='profile')
+router.register(r'profile-pictures', ProfilePictureViewSet, basename='profile-picture')
 
 
 user_router = ExtendedDefaultRouter()

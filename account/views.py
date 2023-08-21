@@ -15,7 +15,7 @@ class CreateUserView(CreateAPIView):
 class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
-    permission_classes = [permissions.DjangoModelPermissions]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         user_id = self.kwargs.get('pk', None)
@@ -29,6 +29,18 @@ class CustomUserViewSet(viewsets.ModelViewSet):
         if self.request.user.is_superuser or self.request.user.is_staff:
             return CustomUser.objects.all()
         return CustomUser.objects.filter(id=self.request.user.id)
+
+    def update(self, request, *args, **kwargs):
+        if not request.user.is_superuser and not request.user.is_staff:
+            if request.user.id != int(kwargs['pk']):
+                raise PermissionDenied('You do not have permission to update this user.')
+        return super().update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        if not request.user.is_superuser and not request.user.is_staff:
+            if request.user.id != int(kwargs['pk']):
+                raise PermissionDenied('You do not have permission to delete this user.')
+        return super().destroy(request, *args, **kwargs)
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
