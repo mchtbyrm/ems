@@ -34,6 +34,7 @@ INSTALLED_APPS = [
 
     # My Apps
     'account.apps.AccountConfig',
+    'events.apps.EventsConfig',
 
     # Third Party Apps
     'rest_framework',
